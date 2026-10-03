@@ -1,0 +1,19 @@
+name: Python CD
+
+on:
+  workflow_run:
+    workflows: ["Docker Build"]
+    types:
+      - completed
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Deploy
+        run: |
+          echo "Deploy application here"
