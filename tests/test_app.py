@@ -77,7 +77,7 @@ def test_predict_low_risk():
 
 
 @pytest.mark.parametrize(
-    "invalid_payload,missing_key",
+    "invalid_payload,_missing_key",
     [
         (
             {
@@ -100,7 +100,7 @@ def test_predict_low_risk():
         ),
     ],
 )
-def test_predict_validation_errors(invalid_payload, missing_key):
+def test_predict_validation_errors(invalid_payload, _missing_key):
     """Pydantic should reject invalid inputs with a 422 Unprocessable Entity."""
     response = client.post("/predict", json=invalid_payload)
     assert response.status_code == 422
@@ -120,4 +120,3 @@ def test_predict_internal_server_error():
         response = client.post("/predict", json=payload)
         assert response.status_code == 500
         assert "Inference failure" in response.json()["detail"]
-        

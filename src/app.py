@@ -14,12 +14,14 @@ app = FastAPI(
 
 
 class ContractType(str, Enum):
+    """Allowed subscription contract types."""
     MONTH_TO_MONTH = "month-to-month"
     ONE_YEAR = "one-year"
     TWO_YEAR = "two-year"
 
 
 class CustomerData(BaseModel):
+    """Input payload schema for customer churn evaluation."""
     customer_id: str = Field(..., examples=["CUST-9821"])
     tenure_months: int = Field(..., ge=0, le=120, description="Tenure in months")
     monthly_charges: float = Field(..., gt=0.0, description="Monthly charges in USD")
@@ -29,6 +31,7 @@ class CustomerData(BaseModel):
 
 
 class PredictionResponse(BaseModel):
+    """Output schema for model prediction results."""
     customer_id: str
     churn_probability: float
     churn_prediction: bool
@@ -114,4 +117,3 @@ def predict(customer: CustomerData):
 
 if __name__ == "__main__":
     uvicorn.run("src.app:app", host="0.0.0.0", port=8000, reload=False)
-    
