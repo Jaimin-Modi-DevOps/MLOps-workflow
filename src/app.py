@@ -1,10 +1,10 @@
 """FastAPI application for Customer Churn Risk Prediction."""
 
 from enum import Enum
-from typing import Dict
+
+import uvicorn
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
-import uvicorn
 
 app = FastAPI(
     title="Customer Churn Prediction Service",
@@ -38,7 +38,7 @@ class PredictionResponse(BaseModel):
     risk_level: str
 
 
-def compute_churn_risk(data: CustomerData) -> Dict[str, float | bool | str]:
+def compute_churn_risk(data: CustomerData) -> dict[str, float | bool | str]:
     """Heuristic / inference mock simulating model scoring."""
     # Base risk factor
     score = 0.20
@@ -78,13 +78,13 @@ def compute_churn_risk(data: CustomerData) -> Dict[str, float | bool | str]:
 
 
 @app.get("/health", status_code=status.HTTP_200_OK)
-def health_check() -> Dict[str, str]:
+def health_check() -> dict[str, str]:
     """Liveness probe endpoint."""
     return {"status": "healthy", "service": "churn-predictor"}
 
 
 @app.get("/model-info", status_code=status.HTTP_200_OK)
-def model_info() -> Dict[str, str]:
+def model_info() -> dict[str, str]:
     """Model governance metadata endpoint."""
     return {
         "model_name": "churn_risk_classifier",
@@ -111,7 +111,7 @@ def predict(customer: CustomerData):
     except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Inference failure: {str(exc)}",
+            detail=f"Inference failure: {exc!s}",
         ) from exc
 
 
